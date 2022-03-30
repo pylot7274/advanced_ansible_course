@@ -1,0 +1,10 @@
+# Simple Flask WebApp for CentOS
+---
+- # Server Provisioning
+  name: '>>> [PLAYBOOK]: Provision CentOS Server for Simple Web App'
+  hosts: centos_servers
+  become: yes
+  roles:
+    - flask-packages
+    - mysqldb
+    - flask-configure

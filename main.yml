@@ -1,0 +1,23 @@
+# Simple Flask Configure and Start for CentOS
+---
+
+- # Installing PIP Packages
+  name: '>>> [TASK]: Installing PIP Packages'
+  command: "pip3 install {{ item }}"
+  with_items:
+    - Flask
+    - Flask-MySQLdb
+- # Checking if code has been downloaded
+  name: '>>> [CHECK]: Checking if code has been downloaded'
+  stat:
+    path: /var/www/html/simple-webapp
+  register: app_dir
+- # Downloading code
+  name: '>>> [TASK]: Downloading Code'
+  command:
+    chdir: '/var/www/html'
+    cmd: "git clone https://github.com/mmumshad/simple-webapp.git"
+  when: app_dir.stat.exists == False
+- # Running Flask Site
+  name: '>>> [TASK]: Running Flask Site'
+  shell: 'cd /var/www/html/simple-webapp && FLASK_APP=/var/www/html/simple-webapp/app.py && nohup python3 -m flask run --host=0.0.0.0 > /dev/null 2>&1 &'
